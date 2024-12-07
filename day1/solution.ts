@@ -1,27 +1,40 @@
 import { readFileSync } from 'node:fs'
 
-const dataString = readFileSync('./day1/input', 'utf8');
+function part1(): number {
+    let totalDistance = 0;
 
-const splitStr = dataString.split(/\s+/g);
+    const dataString = readFileSync('./day1/input', 'utf8');
 
-let leftVals: Array<number> = [];
-let rightVals: Array<number> = [];
+    const splitStr = dataString.trim().split(/\s+/g);
 
-splitStr.forEach((value, index) => {
-    if(index % 2 === 0) {
-        leftVals.push(parseInt(value));
-    } else {
-        rightVals.push(parseInt(value));
-    }
-});
+    let leftVals: Array<number> = [];
+    let rightVals: Array<number> = [];
 
-leftVals.sort((val1, val2) => {
-    return val1 - val2;
-});
+    splitStr.forEach((value, index) => {
+        if (index % 2 === 0) {
+            leftVals.push(parseInt(value));
+        } else {
+            rightVals.push(parseInt(value));
+        }
+    });
 
-rightVals.sort((val1, val2) => {
-    return val1 - val2;
-});
+    leftVals.sort((val1, val2) => {
+        return val1 - val2;
+    });
 
-console.log(leftVals[0]);
-console.log(rightVals[0]);
+    rightVals.sort((val1, val2) => {
+        return val1 - val2;
+    });
+
+    leftVals.forEach((leftVal, index) => {
+        totalDistance += Math.abs(leftVal - rightVals[index]);
+    });
+
+    return totalDistance;
+}
+
+function part2() {
+
+}
+
+console.log(part1());
