@@ -4,7 +4,8 @@ const node_fs_1 = require("node:fs");
 function getInputArrays() {
     let inputData = {
         leftVals: [],
-        rightVals: []
+        rightVals: [],
+        rightCounts: {}
     };
     const dataString = (0, node_fs_1.readFileSync)('./day1/input', 'utf8');
     const splitStr = dataString.trim().split(/\s+/g);
@@ -14,6 +15,12 @@ function getInputArrays() {
         }
         else {
             inputData.rightVals.push(parseInt(value));
+            if (Object.hasOwn(inputData.rightCounts, value)) {
+                inputData.rightCounts[value]++;
+            }
+            else {
+                inputData.rightCounts[value] = 1;
+            }
         }
     });
     return inputData;
@@ -33,6 +40,10 @@ function part1() {
     return totalDistance;
 }
 function part2() {
+    let similarityScore = 0;
     let inputData = getInputArrays();
+    console.log(inputData.rightCounts);
+    return similarityScore;
 }
 console.log(part1());
+console.log(part2());
