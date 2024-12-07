@@ -1,0 +1,22 @@
+{
+    "scripts": {
+        "build": "tsc",
+        "exec:day1": "node day1/solution.js"
+    },
+    "module": "",
+    "devDependencies": {
+        "@types/node": "22.10.1",
+        "ts-node": "10.9.2",
+        "typescript": "5.7.2"
+    },
+    "name": "adventofcode2024",
+    "version": "1.0.0",
+    "description": "Solutions for Advent of Code 2024",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Markues/AdventOfCode2024.git"
+    },
+    "author": "jeff.markues@gmail.com",
+    "license": "MIT"
+}
