@@ -63,7 +63,8 @@ function part2(): number {
     inputData.reports.forEach((report) => {
         const len = report.length;
         let dampener = 1;
-        if(report[0] < report[1]) { // increasing
+
+        if(report[0] < report[len - 1] || report[1] < report[len - 1]) { // increasing
             // Start at the first element and iterate to the next-to-last element
             for(let i = 0; i < len - 1; i++) {
                 // If the subsequent value is increasing and it is within 1-3 of the current value
@@ -75,12 +76,21 @@ function part2(): number {
                         if(i === len - 2) {
                             continue;
                         }
+                        // If checking the first value, check second and third
+                        if(i === 0) {
+                            if(report[i + 1] < report[i + 2] && report[i + 2] - report[i + 1] > 0 && report[i + 2] - report[i + 1] <= 3) {
+                                dampener--;
+                                i++;
+                                continue;
+                            }
+                        }
                         // If the next, next value is increasing and is within 1-3 of the current value
-                        else if(report[i] < report[i + 2] && report[i + 2] - report[i] > 0 && report[i + 2] - report[i] <= 3) {
+                        if(report[i] < report[i + 2] && report[i + 2] - report[i] > 0 && report[i + 2] - report[i] <= 3) {
                             dampener--;
                             i++;
                             continue;
                         }
+                        return;
                     } else {
                         return;
                     }
@@ -88,7 +98,7 @@ function part2(): number {
             }
             // Only increment if all checks have passed
             safeReports++;
-        } else if(report[0] > report[1]) { // decreasing
+        } else if(report[0] > report[len - 1] || report[1] > report[len - 1]) { // decreasing
             // Start at the first element and iterate to the next-to-last element
             for(let i = 0; i < len - 1; i++) {
                 // If the subsequent value is decreasing and it is within 1-3 of the current value
@@ -99,12 +109,22 @@ function part2(): number {
                         // If currently checking the final value(s)
                         if(i === len - 2) {
                             continue;
-                        } // If the next, next value is decreasing and is within 1-3 of the current value
-                        else if(report[i] > report[i + 2] && report[i] - report[i + 2] > 0 && report[i] - report[i + 2] <= 3) {
+                        }
+                        // If checking the first value, check second and third
+                        if(i === 0) {
+                            if(report[i + 1] > report[i + 2] && report[i + 1] - report[i + 2] > 0 && report[i + 1] - report[i + 2] <= 3) {
+                                dampener--;
+                                i++;
+                                continue;
+                            }
+                        }
+                        // If the next, next value is decreasing and is within 1-3 of the current value
+                        if(report[i] > report[i + 2] && report[i] - report[i + 2] > 0 && report[i] - report[i + 2] <= 3) {
                             dampener--;
                             i++;
                             continue;
-                        }
+                        } 
+                        return;
                     } else {
                         return;
                     }
