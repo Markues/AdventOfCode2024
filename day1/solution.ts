@@ -15,5 +15,13 @@ splitStr.forEach((value, index) => {
     }
 });
 
-console.log(leftVals[1]);
-console.log(rightVals[1]);
+leftVals.sort((val1, val2) => {
+    return val1 - val2;
+});
+
+rightVals.sort((val1, val2) => {
+    return val1 - val2;
+});
+
+console.log(leftVals[0]);
+console.log(rightVals[0]);
