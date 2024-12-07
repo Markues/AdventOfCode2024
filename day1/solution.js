@@ -42,7 +42,11 @@ function part1() {
 function part2() {
     let similarityScore = 0;
     let inputData = getInputArrays();
-    console.log(inputData.rightCounts);
+    inputData.leftVals.forEach((leftVal) => {
+        const leftValStr = leftVal.toString();
+        similarityScore += Object.hasOwn(inputData.rightCounts, leftValStr)
+            ? leftVal * inputData.rightCounts[leftValStr] : 0;
+    });
     return similarityScore;
 }
 console.log(part1());

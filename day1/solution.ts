@@ -23,14 +23,14 @@ function getInputArrays(): InputData {
         } else {
             inputData.rightVals.push(parseInt(value));
 
-            if(Object.hasOwn(inputData.rightCounts, value)) {
+            if (Object.hasOwn(inputData.rightCounts, value)) {
                 inputData.rightCounts[value]++;
             } else {
                 inputData.rightCounts[value] = 1;
             }
         }
     });
-    
+
     return inputData;
 }
 
@@ -57,7 +57,11 @@ function part2(): number {
     let similarityScore = 0;
     let inputData = getInputArrays();
 
-    console.log(inputData.rightCounts);
+    inputData.leftVals.forEach((leftVal) => {
+        const leftValStr = leftVal.toString();
+        similarityScore += Object.hasOwn(inputData.rightCounts, leftValStr)
+            ? leftVal * inputData.rightCounts[leftValStr] : 0;
+    });
 
     return similarityScore;
 }
