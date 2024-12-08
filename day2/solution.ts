@@ -53,16 +53,22 @@ function part1(): number {
 function part2(): number {
     let safeReports = 0;
     const inputData = getInputData();
+    const isWithinThree = (val: number): boolean => {
+        return 3 - Math.abs(val) >= 0;
+    }
 
     inputData.reports.forEach((report) => {
         const len = report.length;
         let dampener = 1;
+        let direction = 0;
 
         if(report[0] < report[len - 1] || report[1] < report[len - 1]) { // increasing
+            direction = -1;
             // Start at the first element and iterate to the next-to-last element
             for(let i = 0; i < len - 1; i++) {
+                let diff = report[i] - report[i + 1];
                 // If the subsequent value is increasing and it is within 1-3 of the current value
-                if(report[i] < report[i + 1] && report[i + 1] - report[i] > 0 && report[i + 1] - report[i] <= 3) {
+                if(diff <= direction && isWithinThree(diff)) {
                     continue;
                 } else {
                     if(dampener === 1) {
@@ -72,14 +78,16 @@ function part2(): number {
                         }
                         // If checking the first value, check second and third
                         if(i === 0) {
-                            if(report[i + 1] < report[i + 2] && report[i + 2] - report[i + 1] > 0 && report[i + 2] - report[i + 1] <= 3) {
+                            let secondDiff = report[i + 1] - report[i + 2];
+                            if(secondDiff <= direction && isWithinThree(secondDiff)) {
                                 dampener--;
                                 i++;
                                 continue;
                             }
                         }
+                        let skipDiff = report[i] - report[i + 2];
                         // If the next, next value is increasing and is within 1-3 of the current value
-                        if(report[i] < report[i + 2] && report[i + 2] - report[i] > 0 && report[i + 2] - report[i] <= 3) {
+                        if(skipDiff <= direction && isWithinThree(skipDiff)) {
                             dampener--;
                             i++;
                             continue;
@@ -93,10 +101,12 @@ function part2(): number {
             // Only increment if all checks have passed
             safeReports++;
         } else if(report[0] > report[len - 1] || report[1] > report[len - 1]) { // decreasing
+            direction = 1;
             // Start at the first element and iterate to the next-to-last element
             for(let i = 0; i < len - 1; i++) {
+                let diff = report[i] - report[i + 1];
                 // If the subsequent value is decreasing and it is within 1-3 of the current value
-                if(report[i] > report[i + 1] && report[i] - report[i + 1] > 0 && report[i] - report[i + 1] <= 3) {
+                if(diff >= direction && isWithinThree(diff)) {
                     continue;
                 } else {
                     if(dampener === 1) {
@@ -106,14 +116,16 @@ function part2(): number {
                         }
                         // If checking the first value, check second and third
                         if(i === 0) {
-                            if(report[i + 1] > report[i + 2] && report[i + 1] - report[i + 2] > 0 && report[i + 1] - report[i + 2] <= 3) {
+                            let secondDiff = report[i + 1] - report[i + 2];
+                            if(secondDiff >= direction && isWithinThree(secondDiff)) {
                                 dampener--;
                                 i++;
                                 continue;
                             }
                         }
+                        let skipDiff = report[i] - report[i + 2];
                         // If the next, next value is decreasing and is within 1-3 of the current value
-                        if(report[i] > report[i + 2] && report[i] - report[i + 2] > 0 && report[i] - report[i + 2] <= 3) {
+                        if(skipDiff >= direction && isWithinThree(skipDiff)) {
                             dampener--;
                             i++;
                             continue;
