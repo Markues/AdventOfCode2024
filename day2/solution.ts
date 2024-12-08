@@ -27,30 +27,24 @@ function part1(): number {
     const inputData = getInputData();
 
     inputData.reports.forEach((report) => {
+        if(report[0] === report[1]) return;
+
         const len = report.length;
-        if(report[0] < report[1]) { // increasing
-            // Start at the first element and iterate to the next-to-last element
-            for(let i = 0; i < len - 1; i++) {
-                if(report[i] < report[i + 1] && report[i + 1] - report[i] > 0 && report[i + 1] - report[i] <= 3) {
+        const decreasing = report[0] > report[1];
+
+        for(let i = 0; i < len - 1; i++) {
+            let diff = report[i] - report[i + 1];
+            if((decreasing && diff > 0) || (!decreasing && diff < 0)) {
+                if(3 - Math.abs(diff) >= 0) {
                     continue;
                 } else {
                     return;
                 }
+            } else {
+                return;
             }
-            safeReports++;
-        } else if(report[0] > report[1]) { // decreasing
-            // Start at the first element and iterate to the next-to-last element
-            for(let i = 0; i < len - 1; i++) {
-                if(report[i] > report[i + 1] && report[i] - report[i + 1] > 0 && report[i] - report[i + 1] <= 3) {
-                    continue;
-                } else {
-                    return;
-                }
-            }
-            safeReports++;
-        } else { // unsafe report
-            return;
         }
+        safeReports++;
     });
 
     return safeReports;
