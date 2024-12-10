@@ -12,7 +12,8 @@
     "scripts": {
         "build": "tsc",
         "exec:day1": "node day1/solution.js",
-        "exec:day2": "node day2/solution.js"
+        "exec:day2": "node day2/solution.js",
+        "exec:day3": "node day3/solution.js"
     },
     "devDependencies": {
         "@types/node": "22.10.1",
