@@ -111,7 +111,27 @@ function part1(): number {
 
 function part2(): number {
     let total = 0;
+    const inputData = getInputData();
+    const numRows = inputData.puzzle.length;
+    const numCols = inputData.puzzle[0].length;
 
+    function checkDiagOne(puzzle: string[][], posX: number, posY: number): boolean {
+        return (puzzle[posY + 1][posX + 1] === 'M' && puzzle[posY - 1][posX - 1] === 'S')
+            || (puzzle[posY + 1][posX + 1] === 'S' && puzzle[posY - 1][posX - 1] === 'M');
+    }
+
+    function checkDiagTwo(puzzle: string[][], posX: number, posY: number): boolean {
+        return (puzzle[posY + 1][posX - 1] === 'M' && puzzle[posY - 1][posX + 1] === 'S')
+            || (puzzle[posY + 1][posX - 1] === 'S' && puzzle[posY - 1][posX + 1] === 'M');
+    }
+
+    for(let row = 1; row <= numRows - 2; row++) {
+        for(let col = 1; col <= numCols - 2; col++) {
+            if(inputData.puzzle[row][col] === 'A') {
+                total += checkDiagOne(inputData.puzzle, col, row) && checkDiagTwo(inputData.puzzle, col, row) ? 1 : 0;
+            }   
+        }
+    }
 
     return total;
 }
