@@ -1,6 +1,6 @@
 {
     "name": "adventofcode2024",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "description": "Solutions for Advent of Code 2024",
     "main": "index.js",
     "repository": {
@@ -13,7 +13,8 @@
         "build": "tsc",
         "exec:day1": "node day1/solution.js",
         "exec:day2": "node day2/solution.js",
-        "exec:day3": "node day3/solution.js"
+        "exec:day3": "node day3/solution.js",
+        "exec:day4": "node day4/solution.js"
     },
     "devDependencies": {
         "@types/node": "22.10.1",
