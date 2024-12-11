@@ -95,7 +95,6 @@ function part1(): number {
     for(let row = 0; row <= numRows - 1; row++) {
         for(let col = 0; col <= numCols - 1; col++) {
             if(inputData.puzzle[row][col] === 'X') {
-                // console.log(`${row}, ${col} = ${inputData.puzzle[row][col]}`);
                 total += checkUp(inputData.puzzle, col, row);
                 total += checkDown(inputData.puzzle, col, row);
                 total += checkLeft(inputData.puzzle, col, row);
@@ -104,7 +103,6 @@ function part1(): number {
                 total += checkUpRight(inputData.puzzle, col, row);
                 total += checkDownLeft(inputData.puzzle, col, row);
                 total += checkDownRight(inputData.puzzle, col, row);
-                // console.log(total);
             }   
         }
     }
