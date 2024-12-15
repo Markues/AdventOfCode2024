@@ -53,22 +53,30 @@ function checkTruthTable(inputData: InputData, val1: number, val2: number): bool
     return inputData.truthTable[inputData.uniqueVals.indexOf(val1)][inputData.uniqueVals.indexOf(val2)] === 'T';
 }
 
+function checkPageList(inputData: InputData, pageList: number[]): boolean {
+    return pageList.every((value, index) => {
+        if (index === 0) { // assume the first value is fine
+            return true;
+        }
+        else { // check the rest
+            return checkTruthTable(inputData, pageList[index - 1], value);
+        }
+    });
+}
+
+function getMiddleVal(pageList: number[]): number {
+    return pageList[Math.floor(pageList.length / 2)];
+}
+
 function part1(): number {
     const inputData = getInputData();
     
     const totalMiddles = inputData.pageLists
         .filter((pageList) => { // only consider lists which pass
-            return pageList.every((value, index) => {
-                if (index === 0) { // Assume the first value is fine
-                    return true;
-                }
-                else { // Check the rest
-                    return checkTruthTable(inputData, pageList[index - 1], value);
-                }
-            });
+            return checkPageList(inputData, pageList);
         })
-        .map((update) => { // grab the middle values
-            return update[Math.floor(update.length / 2)];
+        .map((pageList) => {
+            return getMiddleVal(pageList);
         })
         .reduce((val1, val2) => {
             return val1 + val2
@@ -78,9 +86,25 @@ function part1(): number {
 }
 
 function part2(): number {
-    let solution = 0;
+    const inputData = getInputData();
+    
+    const totalFixedMiddles = inputData.pageLists
+        .filter((pageList) => { // only consider lists which do not pass
+            return !checkPageList(inputData, pageList);
+        })
+        .map((badPageList) => { // sort the bad lists using our truth table
+            return badPageList.toSorted((val1, val2) => {
+                return checkTruthTable(inputData, val1, val2) ? -1 : 1;
+            });
+        })
+        .map((pageList) => {
+            return getMiddleVal(pageList);
+        })
+        .reduce((val1, val2) => {
+            return val1 + val2
+        }, 0);
 
-    return solution;
+    return totalFixedMiddles;
 }
 
 console.log(part1());
