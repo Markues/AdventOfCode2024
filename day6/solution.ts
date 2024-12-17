@@ -10,14 +10,7 @@ interface Direction {
     next: string;
 }
 
-interface Directions {
-    up: Direction;
-    right: Direction;
-    down: Direction;
-    left: Direction;
-}
-
-const directions: Directions = {
+const directions: { [k: string]: Direction } = {
     up: {
         changeX: 0,
         changeY: -1,
@@ -54,11 +47,13 @@ function getInputData(): InputData {
     return inputData;
 }
 
-function markTileVisited(inputData: InputData, posX: number, posY: number) {
+function markTileVisited(inputData: InputData, distinctVisits: number, posX: number, posY: number) {
     inputData.guardMap[posY][posX] = 'X';
+    return distinctVisits + 1;
 }
 
 function part1(): number {
+    let distinctVisits = 0;
     let inputData = getInputData();
     let currentDirection: Direction = directions.up;
     let currentPosY: number = inputData.guardMap.findIndex((mapLine) => {
@@ -67,11 +62,33 @@ function part1(): number {
     let currentPosX: number = inputData.guardMap[currentPosY].findIndex((mapTile) => {
         return mapTile === '^';
     });
-    let distinctVisits = 1; // start at one becuase starting position counts
-    markTileVisited(inputData, currentPosX, currentPosY);
-    
+
+    const move = () => {
+        currentPosY += currentDirection.changeY;
+        currentPosX += currentDirection.changeX;
+    }
+     
     while(currentPosY >= 0 && currentPosY < inputData.guardMap.length && currentPosX >= 0 && currentPosX < inputData.guardMap[0].length) {
-        console.log(`${currentPosY}, ${currentPosX}`);
+        if(inputData.guardMap[currentPosY][currentPosX] !== 'X') {
+            distinctVisits = markTileVisited(inputData, distinctVisits, currentPosX, currentPosY);
+        }
+
+        // Check if the guard is about to move off the map
+        if(currentPosY + currentDirection.changeY < 0
+            || currentPosY + currentDirection.changeY >= inputData.guardMap.length
+            || currentPosX + currentDirection.changeX < 0
+            || currentPosX + currentDirection.changeX >= inputData.guardMap[0].length) {
+            move();
+        }
+        // if there is no obstacle in the guard's way - the guard moves
+        else if(inputData.guardMap[currentPosY + currentDirection.changeY][currentPosX + currentDirection.changeX] !== '#') {            
+            move();
+        }
+        // otherwise the guard turns, then moves
+        else {
+            currentDirection = directions[currentDirection.next];
+            move();
+        }
     }
 
     return distinctVisits;
