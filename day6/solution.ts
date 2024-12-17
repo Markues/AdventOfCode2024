@@ -67,6 +67,10 @@ function part1(): number {
         currentPosY += currentDirection.changeY;
         currentPosX += currentDirection.changeX;
     }
+
+    const isNextOpen = () => {
+        return inputData.guardMap[currentPosY + currentDirection.changeY][currentPosX + currentDirection.changeX] !== '#';
+    }
      
     while(currentPosY >= 0 && currentPosY < inputData.guardMap.length && currentPosX >= 0 && currentPosX < inputData.guardMap[0].length) {
         if(inputData.guardMap[currentPosY][currentPosX] !== 'X') {
@@ -81,13 +85,15 @@ function part1(): number {
             move();
         }
         // if there is no obstacle in the guard's way - the guard moves
-        else if(inputData.guardMap[currentPosY + currentDirection.changeY][currentPosX + currentDirection.changeX] !== '#') {            
+        else if(isNextOpen()) {
             move();
         }
-        // otherwise the guard turns, then moves
+        // otherwise the guard turns, then moves if the space is open
         else {
             currentDirection = directions[currentDirection.next];
-            move();
+            if(isNextOpen()) {
+                move();    
+            }
         }
     }
 
